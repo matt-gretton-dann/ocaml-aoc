@@ -28,22 +28,12 @@ let accumulate = List.fold_left ( + ) 0
 let lists_from_file fname =
   Aoc.strings_from_file fname |> List.map pair_nums_from_string |> rev_split
 
-let day2401a a b =
+let day2401a (a, b) =
   List.map2 Aoc.distance1 (List.sort Int.compare a) (List.sort Int.compare b)
   |> accumulate
 
-let day2401b a b = List.map (count b) a |> List.map2 ( * ) a |> accumulate
+let day2401b (a, b) = List.map (count b) a |> List.map2 ( * ) a |> accumulate
 
 let _ =
-  try
-    match Sys.argv with
-    | [| _; fname |] ->
-        let a, b = lists_from_file fname in
-        Printf.printf "Part 1 = %d\n" (day2401a a b);
-        Printf.printf "Part 2 = %d\n" (day2401b a b)
-    | _ ->
-        Printf.printf "Usage: day2401 <fname>\n";
-        exit 1
-  with e ->
-    Printf.printf "An error occured: %s\n" (Printexc.to_string e);
-    exit 1
+  Aoc.main lists_from_file
+    [ (string_of_int, day2401a); (string_of_int, day2401b) ]
