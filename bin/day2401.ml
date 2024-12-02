@@ -1,11 +1,7 @@
-(** [nums_from_string s] takes a string of space separated integers and gives
-    back a list of the integers. *)
-let nums_from_string s = List.map int_of_string (Str.split (Str.regexp " +") s)
-
 (** [pair_nums_from_string s] takes a string of two numbers separated by 
     whitespace and returns the pair of the numbers *)
 let pair_nums_from_string s =
-  match nums_from_string s with
+  match Aoc.nums_from_string s with
   | [ h; h' ] -> (h, h')
   | _ -> raise (Invalid_argument "pair_nums_from_string")
 
@@ -19,9 +15,6 @@ let rev_split lst =
   in
   impl [] [] lst
 
-(** [distance a b] returns the absolute difference between [a] and [b]. *)
-let distance a b = abs (a - b)
-
 (** [count lst n] counts the number of times [n] appears as an element in [lst].
     *)
 let count lst n =
@@ -33,12 +26,10 @@ let accumulate = List.fold_left ( + ) 0
 (** [lists_from_file fname] Read two lists of integers from [fname] and return
     as a pair. *)
 let lists_from_file fname =
-  In_channel.with_open_text fname In_channel.input_lines
-  |> List.map pair_nums_from_string
-  |> rev_split
+  Aoc.strings_from_file fname |> List.map pair_nums_from_string |> rev_split
 
 let day2401a a b =
-  List.map2 distance (List.sort Int.compare a) (List.sort Int.compare b)
+  List.map2 Aoc.distance1 (List.sort Int.compare a) (List.sort Int.compare b)
   |> accumulate
 
 let day2401b a b = List.map (count b) a |> List.map2 ( * ) a |> accumulate
